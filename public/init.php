@@ -28,6 +28,7 @@ function parse_post($post_path){
 	$post_path = str_replace("./", '/', $post_path);
 	$post = [
 		'title'    => get_post_title($post_path),
+		'description'    => get_post_description($post_path),
 		'name'     => basename($post_path),
 		'path'     => $post_path,
 		'fullpath' => POST . '/' . $post_path,
@@ -51,6 +52,13 @@ function get_post_title($post_path) {
 	}
 	return $t;
 }
+
+function get_post_description($post_path) {
+	$file = POST.$post_path;
+	$t = `tail -n +2 $file | tr ' ' '\n' | head -30 | tr '\n' ' '`;
+	return $t;
+}
+
 
 function get_next_posts($current_post, $n=1) {
 	$all = CACHE ."/all";

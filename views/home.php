@@ -3,7 +3,7 @@
 	<body>
 		<?php include __DIR__ . '/parts/header.php'; ?>
 		<div class="container">
-			<?php include __DIR__ . '/parts/list.php'; ?>
+			<?php include __DIR__ . '/parts/list2.php'; ?>
 			
 			<?php if ($page > 1) { ?>
 				<a class="btn btn-primary" href="?page=<?= $page - 1 ?>"> &lt; Prev page</a>

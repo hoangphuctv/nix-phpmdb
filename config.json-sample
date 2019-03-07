@@ -1,0 +1,9 @@
+{
+	"site_name" : "Blog",
+	"author" : "Phuc Tran Hoang",
+	"post_per_page" : 10,
+	"post_relate" : 5,
+
+	"ga_id" : "",
+	"fb_app_id" : ""
+}
