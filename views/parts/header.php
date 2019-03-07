@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand mr-auto mr-lg-0" href="/"><?php echo $config->site_name ?></a>
+  <a class="navbar-brand mr-auto mr-lg-0" href="/"><?php if (isset($title)) { echo htmlspecialchars($title)." - "; } ?><?php echo htmlspecialchars($config->site_name) ?></a>
   <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -16,7 +16,7 @@
 <script>
 	$(function(){
 		$('#frmsearch').submit(function(){
-			location.href='https://google.com/search?q='+ document.all('q').value + " sitename:" + location.hostname; return false;
+			location.href='https://google.com/search?q='+ document.all('q').value + " site:" + location.hostname; return false;
 		});
 	})
 </script>
