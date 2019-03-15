@@ -1,6 +1,12 @@
 <?php
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 if ($page < 1) { $page = 1;}
+
+if ($page == 1 && isset($_GET['page'])) {
+	// avoid ?page=1 duplicate content with /
+	header("Location: /"); exit;
+}
+
 $limit  = $config->post_per_page;
 $offset = ($page - 1) * $limit;
 

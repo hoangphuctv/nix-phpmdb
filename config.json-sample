@@ -3,6 +3,8 @@
 	"author" : "Phuc Tran Hoang",
 	"post_per_page" : 10,
 	"post_relate" : 5,
+	"post_dir" : "./posts",
+	"cache" : "on",
 
 	"ga_id" : "",
 	"fb_app_id" : ""

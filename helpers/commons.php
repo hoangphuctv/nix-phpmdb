@@ -1,13 +1,24 @@
 <?php
 
-if (!defined("ROOT")) { die('File not found'); }
-
-$post = POST;
-$cache = CACHE;
-$all_cache = "$cache/all";
-// if (!file_exists($all_cache)) {
-	echo `cd $post && find . -type f | sort | tac > $all_cache 2>&1`;
-// }
+function init($config){
+	$post      = POST;
+	$cache     = CACHE;
+	$all_cache = "$cache/all";
+	if ($config->cache == 'off' || !file_exists($all_cache)) {
+		$fs = file_find($post);
+		sort($fs);
+		$fs = array_reverse($fs);
+		$fs = implode(PHP_EOL, $fs);
+		$fs = str_replace(POST, '.', $fs);
+		file_put_contents($all_cache, $fs);
+	}
+}
+	
+function parse_uri(){
+	$uri = str_replace('..', '', explode("?", $_SERVER['REQUEST_URI'])[0]);
+	$uri = str_replace('.html', '.md', $uri);
+	return $uri;
+}
 
 function find_posts($offset, $limit){
 	$head = $offset + $limit;
@@ -43,7 +54,8 @@ function parse_post($post_path){
 
 function get_post_title($post_path) {
 	$file = POST.$post_path;
-	$t = `head $file -n 1`;
+	$t = file_head($file, 1);
+	// $t = `head "$file" -n 1`; var_dump($t);die;
 	$t = trim($t);
 	if (empty($t)) {
 		$t = str_replace(".md", ".html", $post_path);
@@ -104,3 +116,54 @@ function current_url() {
     $toret = $protocol . '://' . $host . $request . (empty($query) ? '' : '?' . $query);
     return $toret;
 }
+
+function file_head($filename, $n=1){
+	$lines = [];
+
+	$handle = fopen($filename, "r");
+	if (!$handle) {
+		return false;
+	}
+	$i = 0;
+    while (!feof($handle)) {
+        $buffer = fgets($handle, 4096);
+        $lines[] = $buffer;
+        $i++;
+        if ($i >= $n) {
+        	break;
+        }
+    }
+    fclose($handle);
+    return implode(PHP_EOL, $lines);
+}
+
+function file_each_line($filename, $callback) {
+	$handle = fopen($filename, "r");
+	if (!$handle) {
+		return false;
+	}
+    while (!feof($handle)) {
+        $buffer = fgets($handle, 4096);
+        $callback($buffer);
+    }
+    fclose($handle);
+}
+
+function file_find($dir, &$results=[], $file=true) {
+	$files = scandir($dir);
+
+    foreach($files as $key => $value){
+        $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+        if(!is_dir($path)) {
+            $results[] = $path;
+        } else if($value != "." && $value != "..") {
+            file_find($path, $results);
+            if ($file == false) {
+	            $results[] = $path;
+            }
+        }
+    }
+
+    return $results;
+}
+
