@@ -1,11 +1,16 @@
 <?php
 
 function init($config){
-	$post = POST;
-	$cache = CACHE;
+	$post      = POST;
+	$cache     = CACHE;
 	$all_cache = "$cache/all";
 	if ($config->cache == 'off' || !file_exists($all_cache)) {
-		echo `cd $post && find . -type f | sort | tac > $all_cache 2>&1`;
+		$fs = file_find($post);
+		sort($fs);
+		$fs = array_reverse($fs);
+		$fs = implode(PHP_EOL, $fs);
+		$fs = str_replace(POST, '.', $fs);
+		file_put_contents($all_cache, $fs);
 	}
 }
 	
@@ -143,3 +148,22 @@ function file_each_line($filename, $callback) {
     }
     fclose($handle);
 }
+
+function file_find($dir, &$results=[], $file=true) {
+	$files = scandir($dir);
+
+    foreach($files as $key => $value){
+        $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+        if(!is_dir($path)) {
+            $results[] = $path;
+        } else if($value != "." && $value != "..") {
+            file_find($path, $results);
+            if ($file == false) {
+	            $results[] = $path;
+            }
+        }
+    }
+
+    return $results;
+}
+
