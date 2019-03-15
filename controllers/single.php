@@ -3,7 +3,9 @@
 $content = file_get_contents($mdfile);
 
 $parsedown = new Parsedown();
-$post = $parsedown->text($content);
+$post = (object)parse_post($md_origin);
+
+$post->content = $parsedown->text($content);
 
 $posts = get_next_posts($md_origin, $config->post_relate);
 

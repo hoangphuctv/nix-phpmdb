@@ -5,7 +5,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
 		<div class="container">
 			<div class="markdown-body">
-				<?php if (isset($post)) { echo $post; } ?>
+				<?php if (isset($post)) { echo $post->content; } ?>
 			</div>
 			<?php include __DIR__ . '/parts/fb-comments.php'; ?>	
 		</div>
