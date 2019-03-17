@@ -1,6 +1,5 @@
 <?php
 define('ROOT', realpath(__DIR__ . '/../'));
-define('POST',  ROOT . '/posts');
 define('VIEW',  ROOT . '/views');
 define('CTRL',  ROOT . '/controllers');
 define('CACHE', ROOT . '/cached');
@@ -11,6 +10,15 @@ error_reporting(E_ALL);
 
 global $config;
 $config = json_decode(file_get_contents(ROOT.'/config.json'));
+
+if (!empty($config->post_dir)) {
+	$post_dir = $config->post_dir;
+}else {
+	$post_dir = ROOT . '/posts';
+}
+
+define('POST',  $post_dir);
+unset($post_dir);
 
 include ROOT . '/vendor/autoload.php';
 include ROOT.'/helpers/commons.php';
