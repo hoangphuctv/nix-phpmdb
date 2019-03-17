@@ -6,10 +6,11 @@ function init($config){
 	$all_cache = "$cache/all";
 	if ($config->cache == 'off' || !file_exists($all_cache)) {
 		$fs = file_find($post);
+		$fs = array_filter($fs, function($f){ return preg_match("/\.md$/", $f, $m); });
 		sort($fs);
 		$fs = array_reverse($fs);
 		$fs = implode(PHP_EOL, $fs);
-		$fs = str_replace(POST, '.', $fs);
+		$fs = str_replace(POST, './', $fs);
 		file_put_contents($all_cache, $fs);
 	}
 }
