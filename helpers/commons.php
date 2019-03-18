@@ -42,7 +42,7 @@ function parse_post($post_path){
 		'title'    => get_post_title($post_path),
 		'description'    => get_post_description($post_path),
 		'name'     => basename($post_path),
-		'path'     => $post_path,
+		'path'     => ltrim($post_path, "/"),
 		'fullpath' => POST . '/' . $post_path,
 	];
 	$post['mod_date'] = full_date(filemtime($post['fullpath']));
